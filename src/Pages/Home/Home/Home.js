@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import swal from 'sweetalert';
 import auth from '../../../firebase.init';
 
 const Home = () => {
@@ -36,6 +37,24 @@ const Home = () => {
             });
         event.target.reset();
     }
+
+    const handleDelete = id => {
+        swal("Are you sure you want to delete your comment?", {
+            buttons: ["No!", true],
+        })
+            .then(proceed => {
+                if (proceed) {
+                    const url = `http://localhost:5000/task/${id}`;
+                    fetch(url, {
+                        method: 'DELETE'
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            setRefresh(!refresh);
+                        })
+                }
+            })
+    }
     return (
         <Container>
             <h1 className='my-5 text-danger'>To Do List</h1>
@@ -59,7 +78,7 @@ const Home = () => {
                             <p>Description : {task.description}</p>
                         </div>
                         <button className="btn btn-outline-light me-3">Completed</button>
-                        <button className="btn btn-outline-light">Delete</button>
+                        <button className="btn btn-outline-light" onClick={() => handleDelete(task._id)}>Delete</button>
                     </div>)
                 }
             </div>
