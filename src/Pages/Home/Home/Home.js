@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import auth from '../../../firebase.init';
 
@@ -32,7 +34,7 @@ const Home = () => {
             body: JSON.stringify(task)
         })
             .then(res => res.json())
-            .then(data => { 
+            .then(data => {
                 setRefresh(!refresh)
             });
         event.target.reset();
@@ -55,6 +57,21 @@ const Home = () => {
                 }
             })
     }
+
+    const handleCompleted = id => {
+        const url = `http://localhost:5000/task/${id}`;
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                setRefresh(!refresh);
+            })
+        toast("Task Completed")
+    }
     return (
         <Container>
             <h1 className='my-5 text-danger'>To Do List</h1>
@@ -73,15 +90,16 @@ const Home = () => {
                         key={task._id}
                         className="bg-danger rounded text-white text-start p-4 my-4 shadow-lg"
                     >
-                        <div>
+                        <div className={task.done ? "text-decoration-line-through" : ""}>
                             <p className='fs-4'>Name : {task.name}</p>
                             <p>Description : {task.description}</p>
                         </div>
-                        <button className="btn btn-outline-light me-3">Completed</button>
+                        <button className="btn btn-outline-light me-3" onClick={() => handleCompleted(task._id)} disabled={task.done}>Completed</button>
                         <button className="btn btn-outline-light" onClick={() => handleDelete(task._id)}>Delete</button>
                     </div>)
                 }
             </div>
+            <ToastContainer></ToastContainer>
         </Container>
     );
 };
