@@ -12,7 +12,7 @@ const Home = () => {
     const [refresh, setRefresh] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/tasks?email=${user.email}`)
+        fetch(`https://blooming-oasis-56391.herokuapp.com/tasks?email=${user.email}`)
             .then(res => res.json())
             .then(data => setTasks(data));
     }, [refresh]);
@@ -25,7 +25,7 @@ const Home = () => {
         const done = false;
         const task = { name, description, email, done };
 
-        const url = "http://localhost:5000/tasks";
+        const url = "https://blooming-oasis-56391.herokuapp.com/tasks";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -46,7 +46,7 @@ const Home = () => {
         })
             .then(proceed => {
                 if (proceed) {
-                    const url = `http://localhost:5000/task/${id}`;
+                    const url = `https://blooming-oasis-56391.herokuapp.com/task/${id}`;
                     fetch(url, {
                         method: 'DELETE'
                     })
@@ -59,7 +59,7 @@ const Home = () => {
     }
 
     const handleCompleted = id => {
-        const url = `http://localhost:5000/task/${id}`;
+        const url = `https://blooming-oasis-56391.herokuapp.com/task/${id}`;
         fetch(url, {
             method: 'PUT',
             headers: {
