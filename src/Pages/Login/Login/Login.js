@@ -4,6 +4,7 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading/Loading';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -55,6 +56,7 @@ const Login = () => {
             </Form>
             {errorElement}
             <p className='fs-4 fw-bold my-3'>New to my website? <Link to="/register" className='text-white pe-auto text-decoration-none'>Please Register</Link> </p>
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
